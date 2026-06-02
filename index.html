@@ -3,37 +3,40 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>INSPIRE VIP クラス アコーディオン案 v5</title>
+<title>INSPIRE VIP クラス アコーディオン案 v9</title>
 <style>
   :root{
     --navy:#07104a;
-    --deep:#030735;
+    --deep:#050b32;
     --gold:#c9a64b;
     --gold2:#e5c66e;
     --line:#d8c797;
     --text:#101538;
     --paper:#fffdf7;
     --cream:#fbf5df;
-    --black:#171717;
-    --wine:#540608;
+    --black:#202120;
+    --wine:#570709;
   }
   *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
   body{margin:0;background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;color:var(--text)}
   .phone{max-width:430px;margin:0 auto;background:#fff;min-height:100vh;padding-bottom:40px}
-  .section{padding:28px 18px 20px;background:#fff}
+  .section{padding:28px 18px 22px;background:#fff}
   .lead{text-align:center;margin-bottom:18px}
   .lead .eyebrow{color:var(--gold);font-family:Georgia,serif;font-style:italic;font-size:19px;letter-spacing:.04em;margin-bottom:3px}
   h1{margin:0;color:var(--navy);font-size:24px;line-height:1.35;letter-spacing:.04em}
   .lead p{margin:9px 0 0;font-weight:700;font-size:13px;line-height:1.7;color:#333}
+
   .accordion{display:grid;gap:14px}
   details{border:2px solid var(--line);border-radius:13px;background:var(--paper);overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.04)}
-  details.vip{background:var(--black);color:#fff;border-color:#a98a3d}
-  details.diamond{background:var(--wine);color:#fff;border-color:#c09b47}
+  details.flight{background:linear-gradient(180deg,#fff6dc 0%,#f7e4ad 100%)}
+  details.vip{background:linear-gradient(180deg,#282928 0%,#171817 100%);color:#fff;border-color:#a98a3d}
+  details.diamond{background:linear-gradient(180deg,#660a0c 0%,#430406 100%);color:#fff;border-color:#c09b47}
   summary{list-style:none;cursor:pointer;padding:15px 16px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
   summary::-webkit-details-marker{display:none}
   .plan-sub{font-family:Georgia,serif;font-style:italic;color:#b48a29;font-size:13px;letter-spacing:.08em;margin-bottom:6px}
   .vip .plan-sub,.diamond .plan-sub{color:#f0cf73}
-  .plan-name{font-size:18px;font-weight:900;letter-spacing:.04em;color:var(--navy)}
+  .plan-name{font-size:18px;font-weight:900;letter-spacing:.04em;color:var(--navy);line-height:1.45}
   .vip .plan-name,.diamond .plan-name{color:#fff}
   .buyin{display:flex;align-items:baseline;gap:8px;margin-top:8px;font-weight:800;color:#333}
   .vip .buyin,.diamond .buyin{color:#f4df9c}
@@ -46,30 +49,70 @@
   .icon::before{content:"+"}
   .content{padding:0 16px 18px}
   .rule{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:2px 0 14px}
-  .image{height:132px;border-radius:8px;overflow:hidden;border:1px solid rgba(201,166,75,.5);background:#ddd;margin-bottom:14px;position:relative}
-  .image::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(5,12,60,.24),rgba(255,255,255,.06))}
-  .image.hotel{background:linear-gradient(135deg,#d9c19b,#fff4d5 35%,#6d5236)}
-  .image.suite{background:linear-gradient(135deg,#c9a66b,#fff2ca 38%,#73543a)}
-  .image.flight{background:linear-gradient(135deg,#b9d4ec,#fff 45%,#35546d)}
-  .image.viproom{background:linear-gradient(135deg,#3a3027,#d5bb86 45%,#0b0b10)}
-  .image.diamondroom{background:linear-gradient(135deg,#4b0608,#e4c06c 46%,#1c0508)}
+
+  .section-heading{text-align:center;margin:0 0 10px}
+  .section-heading .en{display:block;font-family:Georgia,serif;letter-spacing:.14em;color:#b48a29;font-weight:700;font-size:12px}
+  .section-heading .ja{display:block;margin-top:2px;color:var(--navy);font-weight:900;font-size:17px;letter-spacing:.05em}
+  .vip .section-heading .en,.diamond .section-heading .en{color:#f0cf73}
+  .vip .section-heading .ja,.diamond .section-heading .ja{color:#fff}
+
+  .benefits-box{border:1px solid rgba(201,166,75,.58);border-radius:10px;background:rgba(255,255,255,.68);padding:13px 12px 12px;margin-bottom:14px}
+  .vip .benefits-box,.diamond .benefits-box{background:rgba(255,255,255,.08);border-color:rgba(240,207,115,.50)}
+  .benefit-list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+  .benefit-list li{display:grid;grid-template-columns:7px 1fr;gap:9px;align-items:start;font-size:14px;font-weight:900;line-height:1.5}
+  .benefit-list li::before{content:"";width:7px;height:7px;border-radius:50%;background:#b48a29;margin-top:.62em}
+  .vip .benefit-list li::before,.diamond .benefit-list li::before{background:#f0cf73}
+  /* ダイヤモンドの「限定10枠」は訴求として重要なので、
+     小さな注釈ではなくバッジ表示に変更 */
+  .subnote{
+    display:inline-flex;
+    align-items:center;
+    margin-left:8px;
+    padding:3px 8px;
+    border:1px solid rgba(240,207,115,.75);
+    border-radius:999px;
+    background:rgba(240,207,115,.14);
+    color:#f4df9c;
+    font-size:12px;
+    font-weight:900;
+    line-height:1.2;
+    vertical-align:middle;
+    letter-spacing:.02em;
+    white-space:nowrap;
+  }
+  @media (max-width:360px){
+    .subnote{display:flex;width:max-content;margin:6px 0 0 0;font-size:12px;padding:4px 9px}
+  }
+  .benefit-list .amount{white-space:nowrap}
+  .benefit-list li{word-break:normal;overflow-wrap:break-word}
+
+  .image{height:142px;border-radius:9px;overflow:hidden;border:1px solid rgba(201,166,75,.55);background:#ddd;margin-bottom:14px;position:relative}
+  .image::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(5,12,60,.18),rgba(255,255,255,.08))}
+  .image::after{content:"特典イメージ";position:absolute;left:12px;top:10px;background:rgba(255,255,255,.76);color:#111538;border-left:5px solid #c01717;padding:7px 12px;font-weight:900;letter-spacing:.04em;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  .image.hotel{background:linear-gradient(135deg,#ead5b0 0%,#fff8e8 34%,#8b6746 72%,#533721 100%)}
+  .image.executive{background:linear-gradient(135deg,#f3e0bd 0%,#fff7e6 33%,#6b4c32 70%,#3a2519 100%)}
+  .image.flightimg{background:linear-gradient(135deg,#c4ddf0 0%,#ffffff 42%,#6e8aa3 64%,#263f55 100%)}
+  .image.viproom{background:linear-gradient(135deg,#111 0%,#3a3027 35%,#d5bb86 66%,#0b0b10 100%)}
+  .image.diamondroom{background:linear-gradient(135deg,#4b0608 0%,#8b1115 34%,#e4c06c 70%,#1c0508 100%)}
   .image span{position:absolute;left:14px;bottom:12px;color:white;font-weight:900;letter-spacing:.06em;text-shadow:0 2px 8px rgba(0,0,0,.45);font-size:16px}
-  .section-title{margin:2px 0 9px;text-align:center;font-family:Georgia,serif;letter-spacing:.14em;color:#b48a29;font-weight:700;font-size:13px}
-  .vip .section-title,.diamond .section-title{color:#f0cf73}
-  .benefits{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:16px}
-  .benefit{border:1px solid rgba(201,166,75,.55);border-radius:8px;background:rgba(255,255,255,.7);padding:11px 8px;text-align:center;font-weight:800;font-size:13px;line-height:1.45;min-height:58px;display:grid;place-items:center}
-  .vip .benefit,.diamond .benefit{background:rgba(255,255,255,.08);border-color:rgba(240,207,115,.5)}
-  .condition{border:1px solid var(--line);border-radius:10px;background:#fff;padding:13px;margin-top:8px}
+
+  .condition{border:1px solid var(--line);border-radius:10px;background:#fff;padding:14px 12px;margin-top:8px}
   .vip .condition,.diamond .condition{background:rgba(255,255,255,.08);border-color:rgba(240,207,115,.55)}
-  .condition-title{text-align:center;color:var(--navy);font-weight:900;font-size:16px;margin-bottom:10px;letter-spacing:.04em}
-  .vip .condition-title,.diamond .condition-title{color:#f4df9c}
-  .condition dl{margin:0;display:grid;gap:8px}
-  .condition .row{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed rgba(201,166,75,.5);padding-bottom:8px;font-size:13px;line-height:1.5}
-  .condition .row:last-child{border-bottom:0;padding-bottom:0}
-  .condition dt{font-weight:900}
-  .condition dd{margin:0;text-align:right;font-weight:700}
+  .game-block{margin-top:12px;border-top:1px solid rgba(201,166,75,.45);padding-top:12px}
+  .game-block:first-of-type{margin-top:0;border-top:0;padding-top:0}
+  .game-title{font-size:13px;font-weight:900;color:#111538;margin:0 0 8px;line-height:1.5}
+  .vip .game-title,.diamond .game-title{color:#fff}
+  .game-title small{display:block;font-size:11px;opacity:.75;font-weight:800;margin-top:1px}
+  .req-table{width:100%;border-collapse:collapse;font-size:13px;line-height:1.5;overflow:hidden;border-radius:8px}
+  .req-table th,.req-table td{border:1px solid rgba(201,166,75,.42);padding:9px 8px;vertical-align:middle}
+  .req-table th{width:42%;background:rgba(201,166,75,.12);text-align:left;font-weight:900;color:#111538}
+  .req-table td{text-align:right;font-weight:800;color:#111538;background:rgba(255,255,255,.45)}
+  .vip .req-table th,.diamond .req-table th{color:#fff;background:rgba(240,207,115,.13)}
+  .vip .req-table td,.diamond .req-table td{color:#fff;background:rgba(255,255,255,.04)}
+  .condition-note{margin:10px 0 0;font-size:11px;line-height:1.65;color:#666;text-align:left}
+  .vip .condition-note,.diamond .condition-note{color:rgba(255,255,255,.72)}
   .cta{display:block;margin-top:14px;width:100%;border:0;border-radius:8px;background:linear-gradient(#f2c84e,#d69c16);color:#07104a;font-weight:900;font-size:15px;padding:14px;text-align:center;text-decoration:none;box-shadow:0 3px 0 #aa7611}
-  .note{font-size:11px;line-height:1.7;color:#666;margin-top:16px;text-align:center}
+  .note{font-size:11px;line-height:1.7;color:#666;margin-top:16px;text-align:left;background:#f8f6ee;border-left:4px solid var(--gold);padding:10px 11px;border-radius:6px}
 </style>
 </head>
 <body>
@@ -78,31 +121,95 @@
       <div class="lead">
         <div class="eyebrow">VIP Class Plan</div>
         <h1>ご希望のクラスを<br>選んで詳細を確認</h1>
-        <p>各クラスの特典・プレイ条件は<br>タップで開いて確認できます。</p>
+        <p>特典内容とプレイ条件を<br>タップで確認できます。</p>
       </div>
       <div class="accordion">
         <details open>
-          <summary><div><div class="plan-sub">First Flight Plan</div><div class="plan-name">お試しクラス</div><div class="buyin"><small>BUY-IN</small><strong>50万円</strong></div></div><div class="icon"></div></summary>
-          <div class="content"><div class="rule"></div><div class="image hotel"><span>INSPIRE Hotel</span></div><div class="section-title">BENEFITS</div><div class="benefits"><div class="benefit">INSPIREホテル<br>1泊</div><div class="benefit">空港送迎<br>あり</div></div><div class="condition"><div class="condition-title">PLAY CONDITIONS</div><dl><div class="row"><dt>テーブルゲーム</dt><dd>バカラ・ブラックジャック</dd></div><div class="row"><dt>ミニマムベット</dt><dd>100,000KRW</dd></div><div class="row"><dt>プレイ数</dt><dd>3シュー</dd></div></dl></div><a href="#" class="cta">今すぐ登録</a></div>
+          <summary><div><div class="plan-sub">Trial Flight Plan</div><div class="plan-name">お試しクラス</div><div class="buyin"><small>BUY-IN</small><strong>50万円</strong></div></div><div class="icon"></div></summary>
+          <div class="content">
+            <div class="rule"></div>
+            <div class="section-heading"><span class="en">BENEFITS</span><span class="ja">特典内容</span></div>
+            <div class="benefits-box"><ul class="benefit-list"><li>INSPIREホテル 1泊</li><li>空港送迎</li></ul></div>
+            <div class="image hotel"><span>INSPIRE Hotel Deluxe Room</span></div>
+            <div class="condition">
+              <div class="section-heading"><span class="en">PLAY REQUIREMENTS</span><span class="ja">プレイ条件</span></div>
+              <div class="game-block"><p class="game-title">テーブルゲーム<small>バカラ・ブラックジャック</small></p><table class="req-table"><tr><th>ミニマムベット</th><td>100,000KRW</td></tr><tr><th>プレイ数</th><td>3シュー</td></tr></table></div>
+              <div class="game-block"><p class="game-title">その他ゲーム<small>スロット・ルーレット等</small></p><table class="req-table"><tr><th>達成条件</th><td>20,000pt達成</td></tr></table></div>
+              <p class="condition-note">※ポーカーは対象外となります。</p>
+            </div>
+            <a href="#" class="cta">今すぐ登録</a>
+          </div>
         </details>
+
         <details>
-          <summary><div><div class="plan-sub">Executive Plan</div><div class="plan-name">エグゼクティブクラス</div><div class="buyin"><small>BUY-IN</small><strong>100万円</strong></div></div><div class="icon"></div></summary>
-          <div class="content"><div class="rule"></div><div class="image hotel"><span>INSPIRE Hotel</span></div><div class="section-title">BENEFITS</div><div class="benefits"><div class="benefit">INSPIREホテル<br>2泊</div><div class="benefit">空港送迎<br>あり</div></div><div class="condition"><div class="condition-title">PLAY CONDITIONS</div><dl><div class="row"><dt>ミニマムベット</dt><dd>100,000KRW</dd></div><div class="row"><dt>達成ポイント</dt><dd>35,000pt</dd></div></dl></div><a href="#" class="cta">今すぐ登録</a></div>
+          <summary><div><div class="plan-sub">Trial Stay Plan</div><div class="plan-name">エグゼクティブクラス</div><div class="buyin"><small>BUY-IN</small><strong>100万円</strong></div></div><div class="icon"></div></summary>
+          <div class="content">
+            <div class="rule"></div>
+            <div class="section-heading"><span class="en">BENEFITS</span><span class="ja">特典内容</span></div>
+            <div class="benefits-box"><ul class="benefit-list"><li>INSPIREホテル 2泊</li><li>空港送迎</li></ul></div>
+            <div class="image executive"><span>INSPIRE Hotel Stay</span></div>
+            <div class="condition">
+              <div class="section-heading"><span class="en">PLAY REQUIREMENTS</span><span class="ja">プレイ条件</span></div>
+              <div class="game-block"><p class="game-title">テーブルゲーム<small>バカラ・ブラックジャック</small></p><table class="req-table"><tr><th>ミニマムベット</th><td>100,000KRW</td></tr><tr><th>プレイ数</th><td>5シュー</td></tr></table></div>
+              <div class="game-block"><p class="game-title">その他ゲーム<small>スロット・ルーレット等</small></p><table class="req-table"><tr><th>達成条件</th><td>35,000pt達成</td></tr></table></div>
+              <p class="condition-note">※ポーカーは対象外となります。</p>
+            </div>
+            <a href="#" class="cta">今すぐ登録</a>
+          </div>
         </details>
-        <details>
+
+        <details class="flight">
           <summary><div><div class="plan-sub">Flight Plan</div><div class="plan-name">フライトクラス</div><div class="buyin"><small>BUY-IN</small><strong>300万円</strong></div></div><div class="icon"></div></summary>
-          <div class="content"><div class="rule"></div><div class="image flight"><span>Flight Benefit</span></div><div class="section-title">BENEFITS</div><div class="benefits"><div class="benefit">スタジオスイート<br>2泊</div><div class="benefit">エコノミーフライト<br>1名分</div><div class="benefit">ルームチャージ<br>525,000KRW〜</div><div class="benefit">空港送迎<br>あり</div></div><div class="condition"><div class="condition-title">PLAY CONDITIONS</div><dl><div class="row"><dt>ミニマムベット</dt><dd>300,000KRW</dd></div><div class="row"><dt>プレイ時間</dt><dd>6時間</dd></div><div class="row"><dt>達成ポイント</dt><dd>105,000pt</dd></div></dl></div><a href="#" class="cta">今すぐ登録</a></div>
+          <div class="content">
+            <div class="rule"></div>
+            <div class="section-heading"><span class="en">BENEFITS</span><span class="ja">特典内容</span></div>
+            <div class="benefits-box"><ul class="benefit-list"><li>INSPIREホテル スタジオスイート 2泊</li><li>エコノミーフライト 1人分</li><li>ルームチャージクレジット <span class="amount">525,000KRW〜</span></li><li>空港送迎</li></ul></div>
+            <div class="image flightimg"><span>Studio Suite / Flight Benefit</span></div>
+            <div class="condition">
+              <div class="section-heading"><span class="en">PLAY REQUIREMENTS</span><span class="ja">プレイ条件</span></div>
+              <div class="game-block"><p class="game-title">テーブルゲーム<small>バカラ・ブラックジャック</small></p><table class="req-table"><tr><th>ミニマムベット</th><td>300,000KRW</td></tr><tr><th>プレイ時間</th><td>6時間</td></tr></table></div>
+              <div class="game-block"><p class="game-title">その他ゲーム<small>スロット・ルーレット等</small></p><table class="req-table"><tr><th>達成条件</th><td>105,000pt達成</td></tr></table></div>
+              <p class="condition-note">※ルームチャージクレジットは、105,000ptを達成された場合に525,000KRWが自動付与されます。ポイントが増えるほど、付与金額も増加します。なお、規定ポイントに達しなかった場合は付与されません。</p>
+            </div>
+            <a href="#" class="cta">今すぐ登録</a>
+          </div>
         </details>
+
         <details class="vip">
-          <summary><div><div class="plan-sub">Premium VIP Plan</div><div class="plan-name">VIPクラス</div><div class="buyin"><small>BUY-IN</small><strong>500万円</strong></div></div><div class="icon"></div></summary>
-          <div class="content"><div class="rule"></div><div class="image viproom"><span>Sun Suite</span></div><div class="section-title">BENEFITS</div><div class="benefits"><div class="benefit">サンスイート<br>2泊</div><div class="benefit">エコノミーフライト<br>2名分</div><div class="benefit">ルームチャージ<br>875,000KRW〜</div><div class="benefit">空港送迎<br>あり</div></div><div class="condition"><div class="condition-title">PLAY CONDITIONS</div><dl><div class="row"><dt>ミニマムベット</dt><dd>500,000KRW</dd></div><div class="row"><dt>プレイ時間</dt><dd>6時間</dd></div><div class="row"><dt>達成ポイント</dt><dd>175,000pt</dd></div></dl></div><a href="#" class="cta">今すぐ登録</a></div>
+          <summary><div><div class="plan-sub">VIP Plan</div><div class="plan-name">VIPクラス</div><div class="buyin"><small>BUY-IN</small><strong>500万円</strong></div></div><div class="icon"></div></summary>
+          <div class="content">
+            <div class="rule"></div>
+            <div class="section-heading"><span class="en">BENEFITS</span><span class="ja">特典内容</span></div>
+            <div class="benefits-box"><ul class="benefit-list"><li>INSPIREホテル サンスイート 2泊</li><li>空港送迎</li><li>エコノミーフライト 2人分（<span class="amount">120,000円上限</span>）</li><li>ルームチャージクレジット <span class="amount">875,000KRW〜</span></li></ul></div>
+            <div class="image viproom"><span>Sun Suite</span></div>
+            <div class="condition">
+              <div class="section-heading"><span class="en">PLAY REQUIREMENTS</span><span class="ja">プレイ条件</span></div>
+              <div class="game-block"><p class="game-title">テーブルゲーム<small>バカラ・ブラックジャック</small></p><table class="req-table"><tr><th>ミニマムベット</th><td>500,000KRW</td></tr><tr><th>プレイ時間</th><td>6時間</td></tr></table></div>
+              <div class="game-block"><p class="game-title">その他ゲーム<small>スロット・ルーレット等</small></p><table class="req-table"><tr><th>達成条件</th><td>175,000pt達成</td></tr></table></div>
+              <p class="condition-note">※ポーカーは対象外となります。<br>※ルームチャージクレジットは、175,000ptを達成された場合に875,000KRWが自動付与されます。ポイントが増えるほど、付与金額も増加します。なお、規定ポイントに達しなかった場合は付与されません。</p>
+            </div>
+            <a href="#" class="cta">今すぐ登録</a>
+          </div>
         </details>
+
         <details class="diamond">
-          <summary><div><div class="plan-sub">Diamond Suite Plan</div><div class="plan-name">ダイヤモンドクラス</div><div class="buyin"><small>BUY-IN</small><strong>1,000万円</strong></div></div><div class="icon"></div></summary>
-          <div class="content"><div class="rule"></div><div class="image diamondroom"><span>INSPIRE Suite</span></div><div class="section-title">BENEFITS</div><div class="benefits"><div class="benefit">INSPIREスイート<br>2泊</div><div class="benefit">ビジネスフライト<br>2名分</div><div class="benefit">ルームチャージ<br>1,125,000KRW〜</div><div class="benefit">空港送迎<br>あり</div></div><div class="condition"><div class="condition-title">PLAY CONDITIONS</div><dl><div class="row"><dt>ミニマムベット</dt><dd>1,000,000KRW</dd></div><div class="row"><dt>プレイ時間</dt><dd>6時間</dd></div><div class="row"><dt>達成ポイント</dt><dd>262,500pt</dd></div></dl></div><a href="#" class="cta">今すぐ登録</a></div>
+          <summary><div><div class="plan-sub">Royal Plan</div><div class="plan-name">ダイヤモンドクラス<span class="subnote">限定10枠</span></div><div class="buyin"><small>BUY-IN</small><strong>1,000万円</strong></div></div><div class="icon"></div></summary>
+          <div class="content">
+            <div class="rule"></div>
+            <div class="section-heading"><span class="en">BENEFITS</span><span class="ja">特典内容</span></div>
+            <div class="benefits-box"><ul class="benefit-list"><li>INSPIREホテル INSPIREスイート 2泊</li><li>空港送迎</li><li>ビジネスフライト 2人分（<span class="amount">300,000円上限</span>）</li><li>ルームチャージクレジット <span class="amount">1,125,000KRW〜</span></li></ul></div>
+            <div class="image diamondroom"><span>INSPIRE Suite</span></div>
+            <div class="condition">
+              <div class="section-heading"><span class="en">PLAY REQUIREMENTS</span><span class="ja">プレイ条件</span></div>
+              <div class="game-block"><p class="game-title">テーブルゲーム<small>バカラ・ブラックジャック</small></p><table class="req-table"><tr><th>ミニマムベット</th><td>1,000,000KRW</td></tr><tr><th>プレイ時間</th><td>6時間</td></tr></table></div>
+              <div class="game-block"><p class="game-title">その他ゲーム<small>スロット・ルーレット等</small></p><table class="req-table"><tr><th>達成条件</th><td>262,500pt達成</td></tr></table></div>
+              <p class="condition-note">※ポーカーは対象外となります。<br>※ルームチャージクレジットは、262,500ptを達成された場合に1,125,000KRWが自動付与されます。ポイントが増えるほど、付与金額も増加します。なお、規定ポイントに達しなかった場合は付与されません。</p>
+            </div>
+            <a href="#" class="cta">今すぐ登録</a>
+          </div>
         </details>
       </div>
-      <p class="note">※画像は実装確認用の仮イメージです。実装時は既存LP内のホテル・客室・送迎画像に差し替えてください。</p>
+      <p class="note">※画像は実装確認用の仮イメージです。実装時は既存LP内のホテル・客室画像に差し替えてください。</p>
     </section>
   </main>
 </body>
